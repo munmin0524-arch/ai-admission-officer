@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 입학사정관 — 합격을 설계하는 AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Noto Sans KR', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#eef2ff',100:'#e0e7ff',200:'#c7d2fe',300:'#a5b4fc',400:'#818cf8',500:'#6366f1',600:'#4f46e5',700:'#4338ca',800:'#3730a3',900:'#312e81' },
+            mint: { 50:'#f0fdfa',100:'#ccfbf1',200:'#99f6e4',300:'#5eead4',400:'#2dd4bf',500:'#14b8a6',600:'#0d9488',700:'#0f766e' },
+            coral: { 50:'#fff1f2',100:'#ffe4e6',400:'#fb7185',500:'#f43f5e',600:'#e11d48' },
+            amber: { 50:'#fffbeb',100:'#fef3c7',400:'#fbbf24',500:'#f59e0b',600:'#d97706' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-gray-800 font-sans">
+
+<!-- ==================== LANDING ==================== -->
+<section id="page-landing" class="page">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center shadow-lg shadow-brand-200">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12 12 0 0121 12.75c0 4.97-4.03 9-9 9s-9-4.03-9-9c0-1.537.383-2.985 1.058-4.25L12 14z"/></svg>
+        </div>
+        <span class="text-xl font-extrabold bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent">AI 입학사정관</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#features" class="text-sm text-gray-500 hover:text-gray-900">주요 기능</a>
+        <button onclick="navigate('navigator')" class="bg-brand-600 text-white px-6 py-2.5 rounded-xl hover:bg-brand-700 font-semibold shadow-lg shadow-brand-200">합격 시뮬레이션 체험</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero: 합격 시뮬레이션 강조 -->
+  <div class="min-h-screen bg-gradient-to-br from-brand-50 via-white to-mint-50 flex items-center pt-20">
+    <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 bg-brand-100 text-brand-700 px-4 py-2 rounded-full text-sm font-semibold mb-8">
+          <span class="w-2 h-2 bg-brand-500 rounded-full animate-pulse"></span>
+          2028 대입 개편 완벽 대응
+        </div>
+        <h1 class="text-[3.5rem] font-black text-gray-900 leading-[1.15] mb-6">
+          합격 가능성,<br>
+          <span class="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">AI가 먼저 분석합니다</span>
+        </h1>
+        <p class="text-xl text-gray-500 leading-relaxed mb-10">
+          입결 데이터 기반 합격 예측 · 목표 대학에서 역산하는 교과 설계 · 세특 자동 합성까지.<br>
+          <strong class="text-gray-700">대학이 보는 시선으로, AI가 먼저 점검합니다.</strong>
+        </p>
+        <div class="flex items-center gap-4 mb-12">
+          <button onclick="navigate('navigator')" class="bg-brand-600 text-white px-8 py-4 rounded-2xl text-lg font-bold hover:bg-brand-700 shadow-xl shadow-brand-200 hover:-translate-y-0.5 transition-all">
+            합격 시뮬레이션 체험 →
+          </button>
+          <button onclick="navigate('record')" class="text-brand-600 font-semibold px-6 py-4 hover:bg-brand-50 rounded-2xl transition">생기부 AI 보기</button>
+        </div>
+        <div class="flex items-center gap-8 text-sm text-gray-400">
+          <div class="flex items-center gap-2"><svg class="w-5 h-5 text-mint-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>공공데이터 API 연동</div>
+          <div class="flex items-center gap-2"><svg class="w-5 h-5 text-mint-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>학생 데이터 암호화</div>
+          <div class="flex items-center gap-2"><svg class="w-5 h-5 text-mint-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>교육부 가이드라인 준수</div>
+        </div>
+      </div>
+      <!-- Hero Visual: Simulation Preview -->
+      <div class="relative">
+        <div class="bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 transform rotate-1 hover:rotate-0 transition-transform duration-500">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-3 h-3 bg-coral-400 rounded-full"></div>
+            <div class="w-3 h-3 bg-amber-400 rounded-full"></div>
+            <div class="w-3 h-3 bg-mint-400 rounded-full"></div>
+            <span class="text-xs text-gray-400 ml-2">합격 시뮬레이션</span>
+          </div>
+          <div class="flex items-center gap-3 mb-4 bg-slate-50 rounded-xl p-3">
+            <div class="w-12 h-12 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center text-white font-black text-lg">김</div>
+            <div>
+              <div class="font-bold">김민수</div>
+              <div class="text-xs text-gray-400">내신 1.8 · 모의 94% · 물리학과</div>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span class="font-bold">서울대 물리천문학부</span><span class="font-black text-brand-600">62%</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-4"><div class="bg-gradient-to-r from-brand-400 to-brand-600 h-4 rounded-full" style="width:62%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span class="font-bold">KAIST 물리학과</span><span class="font-black text-mint-600">78%</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-4"><div class="bg-gradient-to-r from-mint-400 to-mint-600 h-4 rounded-full" style="width:78%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm mb-1"><span class="font-bold">연세대 물리학과</span><span class="font-black text-brand-600">68%</span></div>
+              <div class="w-full bg-gray-100 rounded-full h-4"><div class="bg-gradient-to-r from-brand-400 to-brand-500 h-4 rounded-full" style="width:68%"></div></div>
+            </div>
+          </div>
+          <div class="mt-4 bg-mint-50 rounded-xl p-3 border border-mint-200">
+            <div class="text-xs font-bold text-mint-700">AI 추천</div>
+            <div class="text-xs text-gray-600 mt-1">미적분II 추가 이수 시 KAIST 합격률 +8% 상승 예상</div>
+          </div>
+        </div>
+        <div class="absolute -top-4 -right-4 bg-brand-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg animate-bounce">197개 대학 데이터</div>
+        <div class="absolute -bottom-4 -left-4 bg-mint-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">실시간 입결 분석</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div id="features" class="py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-black mb-4">입시의 모든 것을, 하나로</h2>
+        <p class="text-lg text-gray-400">2028 대입 개편에 맞춘 3가지 핵심 기능</p>
+      </div>
+      <div class="grid grid-cols-3 gap-8">
+        <div class="group bg-gradient-to-b from-white to-brand-50 rounded-3xl p-8 border border-brand-100 hover:shadow-xl transition-all cursor-pointer" onclick="navigate('navigator')">
+          <div class="w-16 h-16 bg-brand-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-brand-600 transition-colors">
+            <svg class="w-8 h-8 text-brand-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">입시 네비게이터</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-4"><strong class="text-gray-700">공공데이터 기반 합격 시뮬레이션</strong>. 목표 대학에서 역산하여 교과 이수 설계와 진로 로드맵을 자동 생성합니다.</p>
+          <div class="flex items-center gap-2 text-brand-600 font-semibold text-sm">체험하기 →</div>
+        </div>
+        <div class="group bg-gradient-to-b from-white to-mint-50 rounded-3xl p-8 border border-mint-100 hover:shadow-xl transition-all cursor-pointer" onclick="navigate('record')">
+          <div class="w-16 h-16 bg-mint-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-mint-600 transition-colors">
+            <svg class="w-8 h-8 text-mint-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">생기부 AI</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-4">관찰 기록 → <strong class="text-gray-700">세특·창체·행발 자동 합성</strong>. 바이트 카운터, 금지어 검출, 학급 내 중복 검사를 한 화면에서.</p>
+          <div class="flex items-center gap-2 text-mint-600 font-semibold text-sm">체험하기 →</div>
+        </div>
+        <div class="group bg-gradient-to-b from-white to-amber-50 rounded-3xl p-8 border border-amber-100 hover:shadow-xl transition-all cursor-pointer" onclick="navigate('grading')">
+          <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500 transition-colors">
+            <svg class="w-8 h-8 text-amber-600 group-hover:text-white transition-colors" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-bold mb-3">채점 가드</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mb-4">서논술형 답안을 <strong class="text-gray-700">루브릭 기반 AI 채점</strong>. 근거 문장 하이라이트와 유사 답안 그룹화로 공정한 채점.</p>
+          <div class="flex items-center gap-2 text-amber-600 font-semibold text-sm">체험하기 →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="py-24 bg-gradient-to-r from-brand-600 to-brand-800 text-center">
+    <h2 class="text-4xl font-black text-white mb-4">지금 바로 체험해보세요</h2>
+    <p class="text-brand-200 text-lg mb-10">학생의 합격 가능성을 AI가 분석해드립니다</p>
+    <button onclick="navigate('navigator')" class="bg-white text-brand-700 px-10 py-5 rounded-2xl text-xl font-bold hover:bg-brand-50 transition shadow-2xl">합격 시뮬레이션 시작 →</button>
+  </div>
+</section>
+
+<!-- ==================== APP SHELL ==================== -->
+<section id="app-shell" class="h-screen flex">
+  <!-- Sidebar -->
+  <aside id="main-sidebar" class="w-16 bg-white border-r border-gray-200 flex flex-col shrink-0 sidebar-compact">
+    <div class="px-6 py-5 border-b border-gray-100 flex items-center gap-3 cursor-pointer sidebar-compact-px" onclick="navigate('landing')">
+      <div class="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-700 rounded-xl flex items-center justify-center shadow-md shadow-brand-200 shrink-0">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12 12 0 0121 12.75c0 4.97-4.03 9-9 9s-9-4.03-9-9c0-1.537.383-2.985 1.058-4.25L12 14z"/></svg>
+      </div>
+      <span class="text-lg font-extrabold bg-gradient-to-r from-brand-600 to-brand-800 bg-clip-text text-transparent sidebar-label">AI 입학사정관</span>
+    </div>
+    <nav class="flex-1 px-4 py-5 space-y-1 sidebar-compact-nav">
+      <a onclick="navigate('dashboard')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="dashboard" title="대시보드">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span class="sidebar-label">대시보드</span>
+      </a>
+      <a onclick="navigate('navigator')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="navigator" title="입시 네비게이터">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        <span class="sidebar-label">입시 네비게이터</span>
+      </a>
+      <a onclick="navigate('record')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="record" title="생기부 AI">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        <span class="sidebar-label">생기부 AI</span>
+      </a>
+      <a onclick="navigate('grading')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="grading" title="채점 가드">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="sidebar-label">채점 가드</span>
+      </a>
+      <div class="border-t border-gray-100 my-3"></div>
+      <a onclick="navigate('report')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="report" title="리포트">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span class="sidebar-label">리포트</span>
+      </a>
+      <a onclick="navigate('classmanage')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer text-sm font-medium" data-page="classmanage" title="학급 관리">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        <span class="sidebar-label">학급 관리</span>
+      </a>
+    </nav>
+    <div class="px-5 py-4 border-t border-gray-100 sidebar-compact-px">
+      <div class="flex items-center gap-3 px-2">
+        <div class="w-10 h-10 bg-gradient-to-br from-brand-400 to-brand-600 rounded-full flex items-center justify-center text-sm font-bold text-white shadow-md shrink-0">김</div>
+        <div class="sidebar-label"><div class="text-sm font-bold">김영희 선생님</div><div class="text-xs text-gray-400">물리I · 2학년 3반</div></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 overflow-auto bg-slate-50">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="page-dashboard" class="app-page hidden">
+      <div class="px-8 py-6 bg-white border-b border-gray-100">
+        <h1 class="text-2xl font-extrabold">대시보드</h1>
+        <p class="text-sm text-gray-400 mt-1">2026년 1학기 · 물리I · 2학년 3반 (32명)</p>
+      </div>
+      <div class="p-8">
+        <!-- Hero Banner: Navigator CTA -->
+        <div class="bg-gradient-to-r from-brand-600 to-brand-800 rounded-2xl p-8 mb-8 flex items-center justify-between cursor-pointer hover:shadow-xl transition" onclick="navigate('navigator')">
+          <div class="text-white">
+            <div class="text-sm font-semibold opacity-80 mb-2">메인 기능</div>
+            <h2 class="text-2xl font-black mb-2">합격 시뮬레이션으로 입시 전략을 세우세요</h2>
+            <p class="text-brand-200 text-sm">공공데이터 기반 합격 예측 · 교과 이수 설계 · 진로 로드맵</p>
+          </div>
+          <div class="bg-white/20 backdrop-blur rounded-xl px-6 py-4 text-white text-center">
+            <div class="text-4xl font-black">197</div>
+            <div class="text-sm opacity-80">연동 대학</div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-4 gap-5 mb-8">
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 bg-brand-100 rounded-xl flex items-center justify-center"><svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+            </div>
+            <div class="text-3xl font-black">32<span class="text-base text-gray-400 font-medium">명</span></div>
+            <div class="text-xs text-gray-400 mt-1">담당 학생</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-11 h-11 bg-mint-100 rounded-xl flex items-center justify-center"><svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div>
+              <span class="text-xs text-mint-600 font-semibold">56%</span>
+            </div>
+            <div class="text-3xl font-black">18<span class="text-base text-gray-400 font-medium">/32</span></div>
+            <div class="text-xs text-gray-400 mt-1">세특 완료</div>
+            <div class="w-full bg-gray-100 rounded-full h-2 mt-3"><div class="bg-mint-500 h-2 rounded-full" style="width:56%"></div></div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div class="text-3xl font-black">3<span class="text-base text-gray-400 font-medium">건</span></div>
+            <div class="text-xs text-gray-400 mt-1">채점 대기</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-coral-100 shadow-sm">
+            <div class="w-11 h-11 bg-coral-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-coral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></div>
+            <div class="text-3xl font-black text-coral-500">2<span class="text-base text-gray-400 font-medium">건</span></div>
+            <div class="text-xs text-gray-400 mt-1">유사도 경고</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-5 gap-6">
+          <!-- Student List -->
+          <div class="col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 class="font-bold text-lg">학생 현황</h2>
+              <div class="flex gap-3 text-xs">
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-mint-400 rounded-full"></span>완료</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-coral-400 rounded-full"></span>미완료</span>
+                <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span>경고</span>
+              </div>
+            </div>
+            <div class="p-4 max-h-[400px] overflow-y-auto" id="dashboard-student-list"></div>
+          </div>
+          <!-- Alerts + Quick Actions -->
+          <div class="col-span-2 space-y-5">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+              <div class="px-6 py-4 border-b border-gray-100"><h2 class="font-bold text-lg">알림</h2></div>
+              <div class="divide-y divide-gray-50">
+                <div class="px-5 py-4 hover:bg-coral-50/50 cursor-pointer" onclick="navigate('record')">
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-coral-100 rounded-lg flex items-center justify-center shrink-0"><svg class="w-4 h-4 text-coral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01"/></svg></div>
+                    <div>
+                      <div class="text-sm font-bold text-coral-600">세특 유사도 87%</div>
+                      <div class="text-xs text-gray-500 mt-1"><strong>김민수</strong>와 <strong>박지영</strong> 세특 거의 동일</div>
+                      <div class="text-xs text-gray-400 mt-1">10분 전</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-5 py-4 hover:bg-amber-50/50 cursor-pointer">
+                  <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center shrink-0"><svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"/></svg></div>
+                    <div>
+                      <div class="text-sm font-bold text-amber-600">금지어 검출</div>
+                      <div class="text-xs text-gray-500 mt-1"><strong>정하늘</strong> 세특에 "교외 수상" 포함</div>
+                      <div class="text-xs text-gray-400 mt-1">3시간 전</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <h2 class="font-bold text-lg mb-4">빠른 실행</h2>
+              <div class="grid grid-cols-2 gap-3">
+                <button onclick="navigate('navigator')" class="bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-xl p-4 text-left transition"><div class="font-bold text-sm mb-1">입시 분석</div><div class="text-xs text-brand-500">합격 시뮬레이션 →</div></button>
+                <button onclick="navigate('record')" class="bg-mint-50 hover:bg-mint-100 text-mint-700 rounded-xl p-4 text-left transition"><div class="font-bold text-sm mb-1">생기부 AI</div><div class="text-xs text-mint-500">세특 작성 →</div></button>
+                <button onclick="navigate('grading')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-xl p-4 text-left transition"><div class="font-bold text-sm mb-1">채점 가드</div><div class="text-xs text-amber-500">3건 대기 →</div></button>
+                <button onclick="navigate('report')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl p-4 text-left transition"><div class="font-bold text-sm mb-1">리포트</div><div class="text-xs text-purple-500">학급 분석 →</div></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NAVIGATOR (MAIN) ===== -->
+    <div id="page-navigator" class="app-page hidden">
+      <div class="px-8 py-6 border-b border-gray-200 bg-white">
+        <h1 class="text-2xl font-extrabold">입시 네비게이터</h1>
+        <p class="text-sm text-gray-400 mt-1">공공데이터 기반 합격 예측 · 교과 이수 설계</p>
+      </div>
+      <div class="p-8">
+        <!-- Profile -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+          <div class="flex items-center gap-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-brand-400 to-brand-600 rounded-2xl flex items-center justify-center text-2xl font-black text-white shadow-lg">김</div>
+            <div>
+              <h2 class="text-xl font-extrabold">김민수</h2>
+              <p class="text-sm text-gray-400">2학년 3반 7번 · 자연계열</p>
+              <button onclick="navigate('classmanage')" class="text-xs text-brand-600 hover:text-brand-800 font-semibold underline underline-offset-2 mt-1">목표 대학·프로필 수정 →</button>
+            </div>
+            <div class="flex gap-8 ml-auto">
+              <div class="text-center"><div class="text-xs text-gray-400 mb-1">내신</div><div class="text-3xl font-black text-brand-600">1.8</div><div class="text-xs text-gray-400 mt-0.5">32명 중 <strong class="text-brand-600">3위</strong></div></div>
+              <div class="text-center"><div class="text-xs text-gray-400 mb-1">모의고사</div><div class="text-3xl font-black text-mint-600">94<span class="text-sm text-gray-400">%</span></div><div class="text-xs text-gray-400 mt-0.5">상위 <strong class="text-mint-600">6%</strong></div></div>
+              <div class="text-center"><div class="text-xs text-gray-400 mb-1">희망전공</div><div class="text-xl font-bold">물리학과</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <!-- Simulation -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-extrabold text-lg">합격 가능성</h3>
+              <button onclick="document.getElementById('method-box').classList.toggle('hidden')" class="text-xs text-brand-600 hover:text-brand-800 font-semibold flex items-center gap-1"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>예측 방법 보기</button>
+            </div>
+            <!-- 예측 방법론 안내 -->
+            <div id="method-box" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-4 mb-5">
+              <h4 class="text-sm font-bold text-gray-700 mb-2 flex items-center gap-2"><svg class="w-4 h-4 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>이 예측은 어떻게 계산되나요?</h4>
+              <p class="text-xs text-gray-500 leading-relaxed mb-2">최근 <strong>3년간 합격자 등급 분포</strong>(70%컷, 50%컷)를 기반으로, 학생의 내신 등급이 해당 분포에서 어디에 위치하는지 통계적으로 계산합니다. <strong>경쟁률 추세, 충원율, 수능최저 충족률</strong>로 보정합니다.</p>
+              <div class="flex items-center gap-4 text-xs text-gray-400">
+                <span>출처: 어디가(adiga.kr), 대학알리미</span>
+                <span>마지막 갱신: 2026.03</span>
+              </div>
+              <div class="mt-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-xs text-amber-700 font-medium">참고용 예측이며, 실제 합격을 보장하지 않습니다.</div>
+            </div>
+            <div class="space-y-5">
+              <!-- 서울대 -->
+              <div class="border border-gray-100 rounded-xl p-4 hover:bg-slate-50 transition">
+                <div class="flex justify-between mb-2"><span class="font-bold text-sm">서울대 물리천문학부</span><span class="font-black text-mint-600">적정 62%</span></div>
+                <div class="w-full bg-gray-100 rounded-full h-5 mb-2"><div class="bg-gradient-to-r from-mint-400 to-mint-500 h-5 rounded-full flex items-center justify-end pr-3" style="width:62%"><span class="text-xs text-white font-black">62%</span></div></div>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <span>70%컷 <strong class="text-gray-700">1.7등급</strong></span>
+                  <span>경쟁률 <strong class="text-gray-700">4.2:1</strong></span>
+                  <span>모집 <strong class="text-gray-700">15명</strong></span>
+                </div>
+                <div class="mt-1.5 text-xs text-gray-400">수능최저: 국·수·탐 3개 합 <strong class="text-gray-600">5등급 이내</strong></div>
+                <div class="mt-1 text-xs text-gray-400">입결 추이: 2024 <strong>1.6</strong> → 2025 <strong>1.7</strong> → 2026예측 <strong>1.7</strong> <span class="text-coral-500 font-bold">↑ 소폭 상승</span></div>
+              </div>
+              <!-- KAIST -->
+              <div class="border border-gray-100 rounded-xl p-4 hover:bg-slate-50 transition">
+                <div class="flex justify-between mb-2"><span class="font-bold text-sm">KAIST 물리학과</span><span class="font-black text-brand-600">안정 78%</span></div>
+                <div class="w-full bg-gray-100 rounded-full h-5 mb-2"><div class="bg-gradient-to-r from-brand-400 to-brand-500 h-5 rounded-full flex items-center justify-end pr-3" style="width:78%"><span class="text-xs text-white font-black">78%</span></div></div>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <span>70%컷 <strong class="text-gray-700">2.0등급</strong></span>
+                  <span>경쟁률 <strong class="text-gray-700">3.1:1</strong></span>
+                  <span>모집 <strong class="text-gray-700">20명</strong></span>
+                </div>
+                <div class="mt-1.5 text-xs text-gray-400">수능최저: <strong class="text-mint-600">없음</strong> (학생부종합)</div>
+                <div class="mt-1 text-xs text-gray-400">입결 추이: 2024 <strong>2.1</strong> → 2025 <strong>2.0</strong> → 2026예측 <strong>2.0</strong> <span class="text-mint-600 font-bold">→ 유지</span></div>
+              </div>
+              <!-- 연세대 -->
+              <div class="border border-gray-100 rounded-xl p-4 hover:bg-slate-50 transition">
+                <div class="flex justify-between mb-2"><span class="font-bold text-sm">연세대 물리학과</span><span class="font-black text-mint-600">적정 68%</span></div>
+                <div class="w-full bg-gray-100 rounded-full h-5 mb-2"><div class="bg-gradient-to-r from-mint-400 to-mint-500 h-5 rounded-full flex items-center justify-end pr-3" style="width:68%"><span class="text-xs text-white font-black">68%</span></div></div>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <span>70%컷 <strong class="text-gray-700">1.8등급</strong></span>
+                  <span>경쟁률 <strong class="text-gray-700">5.7:1</strong></span>
+                  <span>모집 <strong class="text-gray-700">12명</strong></span>
+                </div>
+                <div class="mt-1.5 text-xs text-gray-400">수능최저: 국·수·탐 2개 합 <strong class="text-gray-600">4등급 이내</strong></div>
+                <div class="mt-1 text-xs text-gray-400">입결 추이: 2024 <strong>1.7</strong> → 2025 <strong>1.8</strong> → 2026예측 <strong>1.8</strong> <span class="text-coral-500 font-bold">↑ 소폭 상승</span></div>
+              </div>
+              <!-- 고려대 -->
+              <div class="border border-gray-100 rounded-xl p-4 hover:bg-slate-50 transition">
+                <div class="flex justify-between mb-2"><span class="font-bold text-sm">고려대 물리학과</span><span class="font-black text-brand-600">안정 75%</span></div>
+                <div class="w-full bg-gray-100 rounded-full h-5 mb-2"><div class="bg-gradient-to-r from-brand-400 to-brand-500 h-5 rounded-full flex items-center justify-end pr-3" style="width:75%"><span class="text-xs text-white font-black">75%</span></div></div>
+                <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                  <span>70%컷 <strong class="text-gray-700">1.9등급</strong></span>
+                  <span>경쟁률 <strong class="text-gray-700">4.8:1</strong></span>
+                  <span>모집 <strong class="text-gray-700">18명</strong></span>
+                </div>
+                <div class="mt-1.5 text-xs text-gray-400">수능최저: 국·수·탐 2개 합 <strong class="text-gray-600">5등급 이내</strong></div>
+                <div class="mt-1 text-xs text-gray-400">입결 추이: 2024 <strong>2.0</strong> → 2025 <strong>1.9</strong> → 2026예측 <strong>1.9</strong> <span class="text-mint-600 font-bold">↓ 소폭 하락</span></div>
+              </div>
+            </div>
+            <!-- 출처 + 면책 -->
+            <div class="mt-5 bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <div class="flex items-center justify-between text-xs text-gray-400">
+                <div class="flex items-center gap-3">
+                  <span>출처: 어디가(adiga.kr), 대학알리미</span>
+                  <span>|</span>
+                  <span>데이터 기준: 2023~2025 입결</span>
+                  <span>|</span>
+                  <span>갱신: 2026.03</span>
+                </div>
+              </div>
+              <p class="text-xs text-amber-600 mt-2 font-medium">참고용 예측이며 실제 합격을 보장하지 않습니다. 입학처 공식 발표를 반드시 확인하세요.</p>
+            </div>
+          </div>
+          <!-- Course Design -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+            <h3 class="font-extrabold text-lg mb-5">교과 이수 설계</h3>
+            <div class="space-y-4">
+              <div class="border-2 border-mint-200 bg-mint-50 rounded-xl p-4"><div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-mint-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="font-bold text-mint-700">추천: 물리학II 유지</span></div><p class="text-xs text-gray-600">서울대 가산점 +5점. 미이수 시 62%→41% 하락.</p><p class="text-xs text-mint-500 mt-1.5 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>근거: 서울대 2026 모집요강 — 물리학II 이수자 가산점 부여</p></div>
+              <div class="border-2 border-brand-200 bg-brand-50 rounded-xl p-4"><div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg><span class="font-bold text-brand-700">제안: 미적분II 추가</span></div><p class="text-xs text-gray-600">KAIST 이수자 우대. 합격률 +8% 예상.</p><p class="text-xs text-brand-500 mt-1.5 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>근거: KAIST 2026 모집요강 — 미적분II 이수 권장과목</p></div>
+              <div class="border border-gray-200 bg-gray-50 rounded-xl p-4"><div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg><span class="font-bold text-gray-700">시나리오 비교</span></div><p class="text-xs text-gray-600">화학II→생명과학II 변경 시 고려대 -2점. 현행 유지 권장.</p><p class="text-xs text-gray-400 mt-1.5 flex items-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>근거: 고려대 2026 모집요강 — 교과 반영 방법</p></div>
+            </div>
+            <div class="mt-5"><h4 class="text-sm font-bold text-gray-500 mb-3">이수 현황</h4><div class="flex flex-wrap gap-2"><span class="bg-brand-100 text-brand-700 px-3 py-1.5 rounded-lg text-xs font-bold">물리학I ✓</span><span class="bg-brand-100 text-brand-700 px-3 py-1.5 rounded-lg text-xs font-bold">물리학II 이수중</span><span class="bg-mint-100 text-mint-700 px-3 py-1.5 rounded-lg text-xs font-bold">화학I ✓</span><span class="bg-mint-100 text-mint-700 px-3 py-1.5 rounded-lg text-xs font-bold">화학II 이수중</span><span class="bg-purple-100 text-purple-700 px-3 py-1.5 rounded-lg text-xs font-bold">미적분I ✓</span><span class="bg-gray-100 text-gray-500 px-3 py-1.5 rounded-lg text-xs font-bold border border-dashed border-gray-300">미적분II 미이수</span></div></div>
+          </div>
+        </div>
+        <!-- Roadmap -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <h3 class="font-extrabold text-lg mb-5">진로 로드맵</h3>
+          <div class="flex items-center gap-4 overflow-x-auto pb-2">
+            <div class="shrink-0 bg-gradient-to-b from-brand-50 to-brand-100 rounded-2xl p-5 w-52 text-center border border-brand-200"><div class="text-xs text-brand-600 font-bold mb-2">현재 (2학년)</div><div class="font-extrabold">물리학II 이수</div><div class="text-xs text-gray-400 mt-1">실험물리 심화탐구</div></div>
+            <svg class="w-8 h-8 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            <div class="shrink-0 bg-gradient-to-b from-mint-50 to-mint-100 rounded-2xl p-5 w-52 text-center border border-mint-200"><div class="text-xs text-mint-600 font-bold mb-2">3학년 1학기</div><div class="font-extrabold">미적분II + R&E</div><div class="text-xs text-gray-400 mt-1">과학과제연구</div></div>
+            <svg class="w-8 h-8 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            <div class="shrink-0 bg-gradient-to-b from-amber-50 to-amber-100 rounded-2xl p-5 w-52 text-center border border-amber-200"><div class="text-xs text-amber-600 font-bold mb-2">3학년 2학기</div><div class="font-extrabold">수시 6장 전략</div><div class="text-xs text-gray-400 mt-1">서울대/KAIST/연고대</div></div>
+            <svg class="w-8 h-8 text-gray-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+            <div class="shrink-0 bg-gradient-to-b from-purple-50 to-purple-100 rounded-2xl p-5 w-52 text-center border border-purple-200"><div class="text-xs text-purple-600 font-bold mb-2">목표</div><div class="font-extrabold">물리학과 입학</div><div class="text-xs text-gray-400 mt-1">실험물리학 연구자</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 생기부 AI (세특+관찰+창체+행발 통합) ===== -->
+    <div id="page-record" class="app-page hidden">
+      <div class="px-8 py-6 border-b border-gray-200 bg-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-extrabold">생기부 AI</h1>
+            <p class="text-sm text-gray-400 mt-1">관찰 기록 → 세특·창체·행발 자동 합성</p>
+          </div>
+          <!-- Tab: 세특 / 창체 / 행발 -->
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-gray-400 font-medium">작성 영역:</span>
+            <div class="flex bg-slate-100 rounded-xl p-1">
+              <button class="record-tab px-5 py-2.5 rounded-lg text-sm font-bold transition bg-white text-brand-700 shadow-sm" data-tab="setuek">세특 <span class="text-xs font-normal text-gray-400 ml-1">교과 특기사항</span></button>
+              <button class="record-tab px-5 py-2.5 rounded-lg text-sm font-medium transition text-gray-500 hover:text-gray-700" data-tab="changche">창체 <span class="text-xs font-normal text-gray-400 ml-1">창의적 체험</span></button>
+              <button class="record-tab px-5 py-2.5 rounded-lg text-sm font-medium transition text-gray-500 hover:text-gray-700" data-tab="hangbal">행발 <span class="text-xs font-normal text-gray-400 ml-1">행동 종합의견</span></button>
+            </div>
+          </div>
+        </div>
+        <!-- 가이드 배너 -->
+        <div class="mt-4 bg-brand-50 border border-brand-200 rounded-xl px-5 py-3 flex items-center gap-6">
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-xs font-black">1</span><span class="text-brand-700 font-semibold">관찰 메모 입력</span></div>
+          <svg class="w-4 h-4 text-brand-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-xs font-black">2</span><span class="text-brand-700 font-semibold">AI 합성</span></div>
+          <svg class="w-4 h-4 text-brand-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-xs font-black">3</span><span class="text-brand-700 font-semibold">유사도·금지어 검증</span></div>
+          <svg class="w-4 h-4 text-brand-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center text-xs font-black">4</span><span class="text-brand-700 font-semibold">NEIS 복사</span></div>
+        </div>
+      </div>
+      <div class="flex h-[calc(100vh-89px)]">
+        <!-- Left: Student List -->
+        <div class="w-60 border-r border-gray-200 bg-white overflow-y-auto shrink-0 p-3">
+          <input type="text" placeholder="학생 검색..." class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm mb-3 focus:ring-2 focus:ring-brand-500 focus:border-brand-500">
+          <div class="space-y-1" id="record-student-list"></div>
+        </div>
+
+        <!-- Center: 관찰 기록 + 타임라인 -->
+        <div class="flex-1 p-6 overflow-y-auto border-r border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="font-extrabold text-xl">김민수</h3>
+              <span class="text-sm text-gray-400">2학년 3반 7번 · 희망: 물리학과</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <span class="bg-brand-50 text-brand-600 px-3 py-1.5 rounded-lg text-xs font-semibold">관찰 12건</span>
+              <div class="relative group">
+                <span class="bg-mint-50 text-mint-600 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-help flex items-center gap-1">자기평가서 제출 <svg class="w-3.5 h-3.5 text-mint-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span>
+                <div class="absolute right-0 top-8 bg-gray-800 text-white text-xs rounded-lg px-3 py-2 w-56 hidden group-hover:block z-10 shadow-lg">학생 본인이 작성한 활동 자기평가서 — 교사가 세특 작성 시 참고자료로 활용</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI 역방향 세특 가이드 (강화) -->
+          <div class="bg-gradient-to-br from-brand-50 via-white to-purple-50 rounded-2xl border-2 border-brand-200 p-5 mb-5 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-gradient-to-br from-brand-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                  <h4 class="text-sm font-extrabold text-gray-800">AI 역방향 세특 가이드</h4>
+                  <p class="text-xs text-gray-400">목표 대학이 원하는 역량 → 세특에 반영할 방향</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-gray-500">목표:</span>
+                <select class="border-2 border-brand-200 rounded-lg px-3 py-1.5 text-sm font-bold text-brand-700 bg-white focus:ring-2 focus:ring-brand-500" onchange="alert('목표 대학이 [' + this.value + '](으)로 변경됩니다.\n\n입시 네비게이터, 학급 관리에도 자동 반영됩니다.\n(실제 서비스에서는 모든 페이지에 즉시 연동)')">
+                  <option>서울대 물리천문학부</option>
+                  <option>KAIST 물리학과</option>
+                  <option>연세대 물리학과</option>
+                  <option>고려대 물리학과</option>
+                </select>
+              </div>
+            </div>
+            <p class="text-xs text-brand-600 font-semibold mb-3 bg-brand-100 rounded-lg px-3 py-2">이 대학이 원하는 역량에 맞춰 관찰 메모와 세특을 작성하세요. 아래 4개 역량을 중심으로 기록하면 AI가 합성 시 자동 반영합니다.</p>
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-3.5 border border-blue-200">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="w-7 h-7 bg-blue-500 rounded-lg flex items-center justify-center text-white text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                  </span>
+                  <span class="font-extrabold text-sm text-blue-800">실험설계 역량</span>
+                </div>
+                <p class="text-xs text-blue-700 leading-relaxed">실험 설계, 변인 통제, 오차 분석, 데이터 해석 능력을 보여주는 관찰 기록</p>
+              </div>
+              <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-3.5 border border-purple-200">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="w-7 h-7 bg-purple-500 rounded-lg flex items-center justify-center text-white text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  </span>
+                  <span class="font-extrabold text-sm text-purple-800">수학적 모델링</span>
+                </div>
+                <p class="text-xs text-purple-700 leading-relaxed">물리 현상의 수학적 표현, 그래프 해석, 수식 유도 과정을 기록</p>
+              </div>
+              <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-3.5 border border-amber-200">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="w-7 h-7 bg-amber-500 rounded-lg flex items-center justify-center text-white text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                  </span>
+                  <span class="font-extrabold text-sm text-amber-800">논문 독해력</span>
+                </div>
+                <p class="text-xs text-amber-700 leading-relaxed">학술 자료 탐독, 비교 분석, 심화 보고서 작성 등 자기주도 탐구 기록</p>
+              </div>
+              <div class="bg-gradient-to-br from-mint-50 to-mint-100 rounded-xl p-3.5 border border-mint-200">
+                <div class="flex items-center gap-2 mb-1.5">
+                  <span class="w-7 h-7 bg-mint-500 rounded-lg flex items-center justify-center text-white text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  </span>
+                  <span class="font-extrabold text-sm text-mint-800">협업·리더십</span>
+                </div>
+                <p class="text-xs text-mint-700 leading-relaxed">모둠 토론 주도, 지식 공유, 또래 교수, 리더 역할 기록</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg px-3 py-2 border border-gray-200 flex items-center gap-2">
+              <svg class="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              <p class="text-xs text-gray-500">관찰 메모에 위 역량 키워드를 포함하면 AI가 세특 합성 시 자동으로 반영합니다</p>
+            </div>
+          </div>
+
+          <!-- Inline Memo Input -->
+          <div class="bg-white rounded-xl border border-gray-200 p-4 mb-5 shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-sm font-bold text-gray-500">관찰 메모 추가</span>
+              <span class="text-xs text-gray-300 ml-1">교육부 학생부종합전형 평가 기준 4개 역량</span>
+              <div class="flex gap-1.5 ml-auto">
+                <button class="memo-tag px-3 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-700 active-memo-tag">학업역량</button>
+                <button class="memo-tag px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-500">공동체</button>
+                <button class="memo-tag px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-500">자기주도</button>
+                <button class="memo-tag px-3 py-1 rounded-lg text-xs font-bold bg-gray-100 text-gray-500">진로탐색</button>
+              </div>
+            </div>
+            <div class="flex gap-4 mb-3 text-xs text-gray-400">
+              <span><strong class="text-blue-600">학업역량</strong> 교과 지식 · 탐구력 · 논리적 사고</span>
+              <span><strong class="text-gray-600">공동체</strong> 협업 · 리더십 · 소통 · 나눔</span>
+              <span><strong class="text-gray-600">자기주도</strong> 자발적 학습 · 도전 · 성실</span>
+              <span><strong class="text-gray-600">진로탐색</strong> 진로 관심 · 전공 적합성</span>
+            </div>
+            <div class="flex gap-2">
+              <input type="text" class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500" placeholder="관찰 내용을 간단히 입력하세요...">
+              <button class="bg-brand-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-brand-700 transition" onclick="alert('저장되었습니다.')">저장</button>
+            </div>
+            <div class="mt-2 flex items-center gap-2 text-xs text-gray-400">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              AI 자동 태깅: 메모 내용에서 태그를 자동으로 추천합니다
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <h4 class="text-sm font-bold text-gray-500 mb-3">관찰 타임라인</h4>
+          <div class="border-l-2 border-brand-200 pl-5 space-y-5 mb-6">
+            <div class="relative">
+              <div class="absolute -left-[1.6rem] top-1.5 w-3 h-3 bg-brand-500 rounded-full border-2 border-white shadow"></div>
+              <div class="bg-blue-50 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-blue-200 text-blue-800 px-2.5 py-0.5 rounded-lg text-xs font-bold">학업역량</span><span class="text-xs text-gray-400">2026.09.15</span></div>
+                <p class="text-sm">뉴턴 제2법칙 실험에서 마찰 계수 역추산을 스스로 시도. 다른 모둠에도 방법 공유.</p>
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute -left-[1.6rem] top-1.5 w-3 h-3 bg-mint-500 rounded-full border-2 border-white shadow"></div>
+              <div class="bg-green-50 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-green-200 text-green-800 px-2.5 py-0.5 rounded-lg text-xs font-bold">자기주도</span><span class="text-xs text-gray-400">2026.09.22</span></div>
+                <p class="text-sm">'파인만 물리학 강의' 독서 후 상대성 이론과 뉴턴 역학 한계를 비교하는 보고서 자발 제출.</p>
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute -left-[1.6rem] top-1.5 w-3 h-3 bg-purple-500 rounded-full border-2 border-white shadow"></div>
+              <div class="bg-purple-50 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-purple-200 text-purple-800 px-2.5 py-0.5 rounded-lg text-xs font-bold">공동체</span><span class="text-xs text-gray-400">2026.10.08</span></div>
+                <p class="text-sm">모둠 실험에서 데이터 분석 리더. 불확도 개념을 모둠원에게 설명하며 토론 주도.</p>
+              </div>
+            </div>
+            <div class="relative">
+              <div class="absolute -left-[1.6rem] top-1.5 w-3 h-3 bg-amber-500 rounded-full border-2 border-white shadow"></div>
+              <div class="bg-orange-50 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-2"><span class="bg-orange-200 text-orange-800 px-2.5 py-0.5 rounded-lg text-xs font-bold">진로탐색</span><span class="text-xs text-gray-400">2026.10.20</span></div>
+                <p class="text-sm">"실험물리학자" 진로 언급. CERN 입자가속기 다큐 시청 후 감상문 작성.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 역방향 세특 가이드 (아래로 이동됨 — 여기는 빈 자리) -->
+        </div>
+
+        <!-- Right: AI Output -->
+        <div class="w-[440px] bg-white p-6 overflow-y-auto shrink-0">
+          <!-- Tab Content: 세특 -->
+          <div id="tab-setuek" class="record-tab-content">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-extrabold text-lg">세특 AI 추천</h3>
+              <button class="text-xs bg-brand-50 text-brand-600 px-4 py-2 rounded-xl font-semibold hover:bg-brand-100">재생성</button>
+            </div>
+            <p class="text-xs text-gray-400 mb-4">관찰 메모를 기-승-전-결 구조로 자동 합성한 결과입니다. 텍스트를 직접 수정할 수 있습니다.</p>
+            <div class="bg-slate-50 rounded-xl p-4 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-gray-500 font-medium">바이트 사용량</span>
+                <span class="text-sm font-black" id="byte-counter"><span class="text-brand-600">1,287</span> / 1,500 Byte</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-brand-500 h-2.5 rounded-full" style="width:85.8%" id="byte-bar"></div></div>
+            </div>
+            <div class="border-2 border-brand-200 rounded-2xl p-5 mb-4 bg-brand-50/20">
+              <div class="text-xs text-brand-600 font-bold mb-3">기-승-전-결 구조 · 물리I 세특</div>
+              <textarea class="w-full bg-transparent text-sm leading-[1.9] resize-none border-0 focus:ring-0 p-0 text-gray-700" rows="10" id="setuek-textarea">뉴턴의 제2법칙 실험에서 마찰력에 의한 이론값과 실험값의 괴리에 주목하여 마찰 계수를 역추산하는 독창적인 분석 방법을 스스로 고안함. 이를 모둠원에게 설명하고 불확도 개념을 활용한 데이터 분석 토론을 주도하는 등 협력적 리더십을 보임. '파인만 물리학 강의'를 자발적으로 탐독한 후 뉴턴 역학의 한계와 상대성 이론의 관계를 비교 분석하는 심화 보고서를 작성하여 단순 계산을 넘어 물리학의 체계적 구조를 이해하려는 탐구 자세가 돋보임. 실험과 이론의 간극을 메우는 데 관심이 깊어 향후 실험물리학 분야로의 진로 확장이 기대됨.</textarea>
+            </div>
+            <!-- 성취기준 매핑 -->
+            <div class="bg-slate-50 rounded-xl p-3 mb-4">
+              <div class="text-xs font-bold text-gray-500 mb-2">성취기준 자동 매핑</div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-xs font-medium">[10물리01-03] 뉴턴 운동법칙</span>
+                <span class="bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-xs font-medium">[10물리02-01] 실험 설계</span>
+              </div>
+            </div>
+            <!-- Warnings -->
+            <div class="space-y-3 mb-4">
+              <div class="bg-coral-50 border border-coral-200 rounded-xl p-4">
+                <div class="flex items-center gap-2 mb-1.5"><svg class="w-5 h-5 text-coral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg><span class="text-sm font-bold text-coral-600">유사도 73%</span></div>
+                <p class="text-xs text-coral-600"><strong>박지영</strong> 세특과 유사</p>
+                <p class="text-xs text-gray-500 mt-1">겹침: "마찰 계수를 역추산", "이론값과 실험값의 괴리"</p>
+                <p class="text-xs text-gray-400 mt-1">학급 내 다른 학생 세특과 텍스트 유사도를 비교합니다. 70% 이상이면 차별화가 필요합니다.</p>
+                <button class="mt-2 bg-white text-coral-600 border border-coral-200 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-coral-50">차별화 제안 →</button>
+              </div>
+              <div class="bg-mint-50 border border-mint-200 rounded-xl p-3 flex items-center gap-2"><svg class="w-5 h-5 text-mint-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="text-sm font-bold text-mint-700">금지어 없음</span></div>
+            </div>
+            <div class="flex gap-3">
+              <button class="flex-1 bg-brand-600 text-white py-3.5 rounded-xl font-bold hover:bg-brand-700 shadow-md">NEIS 복사</button>
+              <button class="flex-1 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-50">수정</button>
+            </div>
+          </div>
+
+          <!-- Tab Content: 창체 -->
+          <div id="tab-changche" class="record-tab-content hidden">
+            <div class="flex items-center justify-between mb-5">
+              <h3 class="font-extrabold text-lg">창체 AI 추천</h3>
+              <button class="text-xs bg-mint-50 text-mint-600 px-4 py-2 rounded-xl font-semibold hover:bg-mint-100">재생성</button>
+            </div>
+            <div class="flex bg-slate-100 rounded-xl p-1 mb-5">
+              <button class="changche-sub px-4 py-2 rounded-lg text-xs font-bold bg-white text-mint-700 shadow-sm" data-sub="jarip">자율활동</button>
+              <button class="changche-sub px-4 py-2 rounded-lg text-xs font-medium text-gray-500" data-sub="club">동아리</button>
+              <button class="changche-sub px-4 py-2 rounded-lg text-xs font-medium text-gray-500" data-sub="career">진로활동</button>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-gray-500 font-medium">바이트 (자율 500자)</span>
+                <span class="text-sm font-black"><span class="text-mint-600">1,230</span> / 1,500 Byte</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-mint-500 h-2.5 rounded-full" style="width:82%"></div></div>
+            </div>
+            <div class="border-2 border-mint-200 rounded-2xl p-5 mb-4 bg-mint-50/20">
+              <div class="text-xs text-mint-600 font-bold mb-3">자율활동 · 500자</div>
+              <textarea class="w-full bg-transparent text-sm leading-[1.9] resize-none border-0 focus:ring-0 p-0 text-gray-700" rows="8">학급 자치회 부회장으로서 학급 규칙 개정 회의를 주도적으로 이끌며, 소수 의견을 경청하고 다수결과 합의를 조화롭게 운영하는 민주적 리더십을 보임. 학교 축제 과학 체험 부스 기획에서 '일상 속 물리법칙' 주제를 제안하여 방문 학생들에게 뉴턴의 운동법칙을 실생활 예시로 설명하는 활동을 진행함. 특히 체험 키트를 직접 설계하여 참여자의 이해도를 높인 점이 돋보임.</textarea>
+            </div>
+            <div class="flex gap-3">
+              <button class="flex-1 bg-mint-600 text-white py-3.5 rounded-xl font-bold hover:bg-mint-700 shadow-md">NEIS 복사</button>
+              <button class="flex-1 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-50">수정</button>
+            </div>
+          </div>
+
+          <!-- Tab Content: 행발 -->
+          <div id="tab-hangbal" class="record-tab-content hidden">
+            <div class="flex items-center justify-between mb-5">
+              <h3 class="font-extrabold text-lg">행발 AI 추천</h3>
+              <button class="text-xs bg-amber-50 text-amber-600 px-4 py-2 rounded-xl font-semibold hover:bg-amber-100">재생성</button>
+            </div>
+            <div class="bg-slate-50 rounded-xl p-4 mb-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-gray-500 font-medium">바이트 (행발 500자)</span>
+                <span class="text-sm font-black"><span class="text-amber-600">1,410</span> / 1,500 Byte</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2.5"><div class="bg-amber-500 h-2.5 rounded-full" style="width:94%"></div></div>
+            </div>
+            <div class="border-2 border-amber-200 rounded-2xl p-5 mb-4 bg-amber-50/20">
+              <div class="text-xs text-amber-600 font-bold mb-3">행동특성 및 종합의견 · 담임 총평</div>
+              <textarea class="w-full bg-transparent text-sm leading-[1.9] resize-none border-0 focus:ring-0 p-0 text-gray-700" rows="8">호기심이 풍부하고 자기주도적인 학습 태도를 지닌 학생으로, 특히 물리 분야에서 이론과 실험을 연결하려는 탐구 자세가 남다름. 수업 중 발생한 의문점을 그냥 넘기지 않고 스스로 심화 자료를 찾아 보고서로 정리하는 습관이 있음. 모둠 활동에서는 자신의 이해를 또래에게 설명하며 함께 성장하려는 태도를 보이며, 리더십과 배려심을 균형 있게 발휘함. 실험물리학자를 꿈꾸며 관련 분야의 독서와 탐구를 지속적으로 확장해 나가는 성장 잠재력이 우수한 학생임.</textarea>
+            </div>
+            <div class="bg-mint-50 border border-mint-200 rounded-xl p-3 mb-4 flex items-center gap-2"><svg class="w-5 h-5 text-mint-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg><span class="text-sm font-bold text-mint-700">금지어 없음 · 학년 스토리라인 일관</span></div>
+            <div class="flex gap-3">
+              <button class="flex-1 bg-amber-500 text-white py-3.5 rounded-xl font-bold hover:bg-amber-600 shadow-md">NEIS 복사</button>
+              <button class="flex-1 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-50">수정</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== GRADING GUARD ===== -->
+    <div id="page-grading" class="app-page hidden">
+      <div class="px-8 py-6 border-b border-gray-200 bg-white">
+        <div class="flex items-center justify-between">
+          <div><h1 class="text-2xl font-extrabold">채점 가드</h1><p class="text-sm text-gray-400 mt-1">서논술형 AI 채점 · 근거 매칭</p></div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-gray-500 font-medium">채점할 시험:</span>
+            <select class="border-2 border-brand-200 rounded-xl px-5 py-3 text-sm bg-brand-50 font-bold text-brand-700 focus:ring-2 focus:ring-brand-500"><option>2학기 중간고사 물리I 서술형</option><option>뉴턴 역학 심화 탐구 보고서</option></select>
+          </div>
+        </div>
+        <!-- 가이드 배너 -->
+        <div class="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-center gap-6">
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-black">1</span><span class="text-amber-800 font-semibold">시험 선택</span></div>
+          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-black">2</span><span class="text-amber-800 font-semibold">학생 답안 확인</span></div>
+          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-black">3</span><span class="text-amber-800 font-semibold">AI 채점 검토</span></div>
+          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          <div class="flex items-center gap-2 text-sm"><span class="w-6 h-6 bg-amber-500 text-white rounded-full flex items-center justify-center text-xs font-black">4</span><span class="text-amber-800 font-semibold">확정</span></div>
+        </div>
+      </div>
+      <div class="flex h-[calc(100vh-89px)]">
+        <div class="w-52 border-r border-gray-200 bg-white overflow-y-auto shrink-0 p-3 space-y-1" id="grading-student-list"></div>
+        <div class="flex-1 p-6 overflow-y-auto border-r border-gray-100">
+          <div class="mb-4"><h3 class="font-extrabold text-lg">학생 답안</h3><span class="text-xs text-gray-400">김민수 · 2학년 3반 7번</span></div>
+          <div class="bg-slate-50 rounded-2xl p-6 text-sm leading-[1.8]">
+            <p>뉴턴의 제2법칙 F=ma에서 <mark class="bg-blue-100 text-blue-800 px-1 rounded">힘은 질량과 가속도의 곱으로 표현되며, 이는 물체의 운동 상태 변화를 정량적으로 설명하는 핵심 원리이다.</mark></p><br>
+            <p>실험에서 수레의 질량을 고정하고 추의 무게를 변화시켰을 때, <mark class="bg-green-100 text-green-800 px-1 rounded">추의 질량이 2배가 되면 가속도도 약 2배로 증가하는 비례 관계</mark>를 확인할 수 있었다. 이때 <mark class="bg-purple-100 text-purple-800 px-1 rounded">이론값과 실험값의 오차가 약 8%로 발생하였고, 이를 계통오차로 분석하여 마찰 계수를 역추산</mark>하였다.</p><br>
+            <p>질량이 일정할 때 힘과 가속도의 관계 그래프에서 y절편이 존재했다. <mark class="bg-yellow-100 text-yellow-800 px-1 rounded">이를 정지마찰력의 존재로 해석하고, 임계값 이하의 힘에서는 가속이 시작되지 않는다는 추가 결론</mark>을 도출하였다.</p><br>
+            <p>결론적으로 <mark class="bg-orange-100 text-orange-800 px-1 rounded">이론과 실제의 간극을 메우는 과학적 사고의 중요성</mark>을 깨달았다.</p>
+          </div>
+          <div class="mt-4 flex items-center gap-3 text-xs flex-wrap">
+            <span class="text-gray-400">근거 매칭:</span>
+            <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg font-medium">개념이해</span>
+            <span class="bg-green-100 text-green-700 px-2.5 py-1 rounded-lg font-medium">실험설계</span>
+            <span class="bg-purple-100 text-purple-700 px-2.5 py-1 rounded-lg font-medium">비판적사고</span>
+            <span class="bg-yellow-100 text-yellow-700 px-2.5 py-1 rounded-lg font-medium">논리전개</span>
+            <span class="bg-orange-100 text-orange-700 px-2.5 py-1 rounded-lg font-medium">성찰</span>
+          </div>
+        </div>
+        <div class="w-[400px] bg-white p-6 overflow-y-auto shrink-0">
+          <h3 class="font-extrabold text-lg mb-3">AI 채점 결과</h3>
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-4">
+            <p class="text-xs text-gray-500"><strong class="text-gray-700">루브릭(채점 기준표)</strong>은 교사가 설정하고, AI가 그 기준에 맞춰 1차 채점합니다. 점수와 감점 사유를 확인한 후 확정하세요. 수정도 가능합니다.</p>
+          </div>
+          <div class="bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl p-5 mb-6 text-center text-white shadow-lg shadow-brand-200">
+            <div class="text-sm opacity-80 mb-1">총점</div><div class="text-5xl font-black">17<span class="text-xl opacity-60">/20</span></div>
+          </div>
+          <div class="space-y-3">
+            <div class="bg-blue-50 rounded-xl p-4"><div class="flex justify-between mb-1"><span class="text-sm font-bold">개념 이해</span><span class="bg-blue-200 text-blue-800 px-3 py-0.5 rounded-lg text-sm font-black">4/5</span></div><div class="text-xs text-gray-500">F=ma 정의 정확. 벡터 표현 누락.</div></div>
+            <div class="bg-green-50 rounded-xl p-4"><div class="flex justify-between mb-1"><span class="text-sm font-bold">실험 설계</span><span class="bg-green-200 text-green-800 px-3 py-0.5 rounded-lg text-sm font-black">5/5</span></div><div class="text-xs text-gray-500">변인 설정 적절. 비례 관계 검증.</div></div>
+            <div class="bg-purple-50 rounded-xl p-4"><div class="flex justify-between mb-1"><span class="text-sm font-bold">비판적 사고</span><span class="bg-purple-200 text-purple-800 px-3 py-0.5 rounded-lg text-sm font-black">4/5</span></div><div class="text-xs text-gray-500">마찰 계수 역추산 우수. 불확도 부족.</div></div>
+            <div class="bg-yellow-50 rounded-xl p-4 border border-yellow-200"><div class="flex justify-between mb-1"><span class="text-sm font-bold">논리 전개</span><span class="bg-yellow-200 text-yellow-800 px-3 py-0.5 rounded-lg text-sm font-black">3/5</span></div><div class="text-xs text-coral-600 font-medium">감점: 인과 관계 불충분.</div></div>
+            <div class="bg-orange-50 rounded-xl p-4 border border-orange-200"><div class="flex justify-between mb-1"><span class="text-sm font-bold">성찰·확장</span><span class="bg-orange-200 text-orange-800 px-3 py-0.5 rounded-lg text-sm font-black">1/5</span></div><div class="text-xs text-coral-600 font-medium">감점: 후속 탐구 방향 없음.</div></div>
+          </div>
+          <div class="mt-5 bg-amber-50 border border-amber-200 rounded-2xl p-4">
+            <h4 class="text-sm font-bold text-amber-700 mb-1">유사 답안 (82%)</h4>
+            <p class="text-xs text-amber-600 mb-2">학급 내 답안을 AI가 비교합니다. 82% 이상 유사하면 자동 그룹화하여 부정행위를 감지합니다.</p>
+            <div class="flex gap-2 flex-wrap"><span class="bg-white text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-200">김민수</span><span class="bg-white text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-200">이준호</span><span class="bg-white text-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold border border-amber-200">박서준</span></div>
+          </div>
+          <div class="mt-5 flex gap-3">
+            <button class="flex-1 bg-brand-600 text-white py-3.5 rounded-xl font-bold hover:bg-brand-700 shadow-md" onclick="alert('확정!')">확정</button>
+            <button class="flex-1 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-50">수정</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REPORT ===== -->
+    <div id="page-report" class="app-page hidden">
+      <div class="px-8 py-6 bg-white border-b border-gray-100">
+        <h1 class="text-2xl font-extrabold">리포트</h1>
+        <p class="text-sm text-gray-400 mt-1">2026년 1학기 · 물리I · 2학년 3반 (32명) — 학급 전체 현황을 한눈에</p>
+      </div>
+      <div class="p-8">
+        <!-- 요약 카드 -->
+        <div class="grid grid-cols-4 gap-5 mb-8">
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="w-11 h-11 bg-mint-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-mint-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div>
+            <div class="text-3xl font-black">18<span class="text-base text-gray-400 font-medium">/32</span></div>
+            <div class="text-xs text-gray-400 mt-1">세특 완료</div>
+            <div class="w-full bg-gray-100 rounded-full h-2 mt-3"><div class="bg-mint-500 h-2 rounded-full" style="width:56%"></div></div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="w-11 h-11 bg-brand-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div>
+            <div class="text-3xl font-black">68<span class="text-base text-gray-400 font-medium">%</span></div>
+            <div class="text-xs text-gray-400 mt-1">평균 합격 예측률</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-coral-100 shadow-sm">
+            <div class="w-11 h-11 bg-coral-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-coral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg></div>
+            <div class="text-3xl font-black text-coral-500">2<span class="text-base text-gray-400 font-medium">건</span></div>
+            <div class="text-xs text-gray-400 mt-1">유사도 경고</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+            <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center mb-3"><svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+            <div class="text-3xl font-black">89<span class="text-base text-gray-400 font-medium">%</span></div>
+            <div class="text-xs text-gray-400 mt-1">채점 완료율</div>
+          </div>
+        </div>
+
+        <!-- 학생별 종합 테이블 -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="font-bold text-lg">학생별 종합 현황</h2>
+            <span class="text-xs text-gray-400">내신 기준 정렬</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-gray-500 text-xs">
+                <tr><th class="px-4 py-3 text-left font-semibold">번호</th><th class="px-4 py-3 text-left font-semibold">이름</th><th class="px-4 py-3 text-left font-semibold">내신</th><th class="px-4 py-3 text-left font-semibold">모의</th><th class="px-4 py-3 text-left font-semibold">희망전공</th><th class="px-4 py-3 text-left font-semibold">세특</th><th class="px-4 py-3 text-left font-semibold">합격 예측</th><th class="px-4 py-3 text-left font-semibold">경고</th></tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50" id="report-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 유사도 경고 -->
+        <div class="bg-white rounded-2xl border border-coral-100 shadow-sm">
+          <div class="px-6 py-4 border-b border-coral-100"><h2 class="font-bold text-lg text-coral-600">유사도 경고</h2></div>
+          <div class="p-5 space-y-3">
+            <div class="flex items-center gap-4 bg-coral-50 rounded-xl p-4">
+              <div class="w-10 h-10 bg-coral-100 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-coral-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01"/></svg></div>
+              <div class="flex-1"><div class="text-sm font-bold">김민수 ↔ 박지영</div><div class="text-xs text-gray-500 mt-0.5">세특 유사도 <strong class="text-coral-600">87%</strong> · 겹침: "마찰 계수를 역추산", "이론값과 실험값의 괴리"</div></div>
+              <button onclick="navigate('record')" class="text-xs bg-white text-coral-600 border border-coral-200 px-3 py-1.5 rounded-lg font-bold hover:bg-coral-50">확인 →</button>
+            </div>
+            <div class="flex items-center gap-4 bg-amber-50 rounded-xl p-4">
+              <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"/></svg></div>
+              <div class="flex-1"><div class="text-sm font-bold">정하늘 — 금지어 검출</div><div class="text-xs text-gray-500 mt-0.5">세특에 <strong class="text-amber-600">"교외 수상"</strong> 포함 · 교육부 기재요령 위반</div></div>
+              <button onclick="navigate('record')" class="text-xs bg-white text-amber-600 border border-amber-200 px-3 py-1.5 rounded-lg font-bold hover:bg-amber-50">확인 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CLASS MANAGE ===== -->
+    <div id="page-classmanage" class="app-page hidden">
+      <div class="px-8 py-6 bg-white border-b border-gray-100">
+        <h1 class="text-2xl font-extrabold">학급 관리</h1>
+        <p class="text-sm text-gray-400 mt-1">학생 프로필 관리 · 내신, 모의고사, 희망전공, 목표 대학 설정</p>
+      </div>
+      <div class="p-8">
+        <!-- 학급 정보 -->
+        <div class="bg-gradient-to-r from-brand-50 to-mint-50 rounded-2xl p-6 mb-8 border border-brand-100 flex items-center justify-between">
+          <div class="flex items-center gap-6">
+            <div class="w-14 h-14 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">김</div>
+            <div>
+              <div class="text-lg font-extrabold">김영희 선생님</div>
+              <div class="text-sm text-gray-500 mt-0.5">물리I · 2학년 3반 · 2026년 1학기</div>
+            </div>
+          </div>
+          <div class="flex gap-6 text-center">
+            <div><div class="text-2xl font-black">32</div><div class="text-xs text-gray-400">총 학생</div></div>
+            <div><div class="text-2xl font-black text-mint-600">18</div><div class="text-xs text-gray-400">세특 완료</div></div>
+            <div><div class="text-2xl font-black text-coral-500">14</div><div class="text-xs text-gray-400">미완료</div></div>
+          </div>
+        </div>
+
+        <!-- 안내 -->
+        <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 mb-6 flex items-center gap-3">
+          <svg class="w-5 h-5 text-brand-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <p class="text-sm text-brand-700">학생의 <strong>내신, 모의고사 점수, 희망전공, 목표 대학</strong>을 설정하면 입시 네비게이터에서 합격 시뮬레이션에 반영됩니다. 편집 버튼을 눌러 수정하세요.</p>
+        </div>
+
+        <!-- 학생 테이블 -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="font-bold text-lg">학생 목록</h2>
+            <div class="flex gap-2">
+              <input type="text" placeholder="학생 검색..." class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 w-48">
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead class="bg-slate-50 text-gray-500 text-xs">
+                <tr><th class="px-4 py-3 text-left font-semibold">번호</th><th class="px-4 py-3 text-left font-semibold">이름</th><th class="px-4 py-3 text-left font-semibold">내신</th><th class="px-4 py-3 text-left font-semibold">모의고사</th><th class="px-4 py-3 text-left font-semibold">희망전공</th><th class="px-4 py-3 text-left font-semibold">목표 대학</th><th class="px-4 py-3 text-left font-semibold">세특</th><th class="px-4 py-3 text-center font-semibold">편집</th></tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50" id="classmanage-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</section>
+
+<script src="js/app.js"></script>
+</body>
+</html>
